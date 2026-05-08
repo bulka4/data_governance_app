@@ -1,0 +1,11 @@
+- Install node js, mongodb and mongosh
+
+- Run command ‘npm i express mongoose ejs mssql msnodesqlv8 method-override dotenv @xenova/transformers bcrypt passport passport-local express-session express-flash’
+
+- In order to prepare mongodb database for this app use command ‘node db_preparation/load_tables_list.js’
+
+- In order to prepare machine learning model for search engine use this command ‘py ml_model/model_preparation.py’ or ‘python ml_model/model_preparation.py’
+
+- In order to run server use command: ‘npm run devStart’
+
+- In order to open the website in a browser use url ‘localhost:4000’

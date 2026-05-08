@@ -1,0 +1,6 @@
+**/node_modules
+**/model
+**/models
+**/__pycache__
+.env
+test.js

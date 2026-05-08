@@ -1,0 +1,121 @@
+<!-- This is a view used in the /data_lineage URL -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
+    <link rel="stylesheet" href="/bootstrap.css">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <script type="module" src="/dataLineageScripts.js"></script>
+</head>
+<body>
+    <div class="list-group" style="width: 300px; height: 100vh; overflow: auto; display: inline-block; width: 15%">
+
+        <!-- section with search engine -->
+        <form action="/data_lineage/search" method="POST" style="margin-bottom: 20px">
+            <div style="text-align: center;">
+                <label>Type in what you are looking for</label>
+            </div>
+            <div style="text-align: center;">
+                <input type="input" name="searchBar" style="width: 100%; margin-bottom: 10px" value ="<%= searchedQuery %>">
+                <button type="submit" name="actualUrl" value="<%= actualUrl %>">Search</button>
+            </div>
+        </form>
+
+        <!-- section with data lineage documents list -->
+        <% docs.forEach(doc => { %>
+            <% if (selectedDoc == undefined) { %>
+                <div class="list-group-item list-group-item-action" style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">
+                <% if (searchedQuery != '') { %>
+                    <a href="/data_lineage/<%= doc.dataLineageId %>?searchedQuery=<%= searchedQuery %>">
+                <% } else { %>
+                    <a href="/data_lineage/<%= doc.dataLineageId %>">
+                <% } %>
+                        <%= doc.dataLineageName %>
+                    </a>
+                </div>
+                
+            <% } else { %>
+                <% if (doc.dataLineageId == selectedDoc.dataLineageId) { %>
+                    <div class="list-group-item list-group-item-action active" style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">
+                        <% if (searchedQuery != '') { %>
+                            <a href="/data_lineage/<%= doc.dataLineageId %>?searchedQuery=<%= searchedQuery %>" style="color: white">
+                        <% } else { %>
+                            <a href="/data_lineage/<%= doc.dataLineageId %>" style="color: white">
+                        <% } %>
+                <% } else { %>
+                    <div class="list-group-item list-group-item-action" style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">
+                    <% if (searchedQuery != '') { %>
+                        <a href="/data_lineage/<%= doc.dataLineageId %>?searchedQuery=<%= searchedQuery %>">
+                    <% } else { %>
+                        <a href="/data_lineage/<%= doc.dataLineageId %>">
+                    <% } %>
+                <% } %>
+                            <%= doc.dataLineageName %>
+                        </a>
+                    </div>
+            <% } %>
+        <% }) %>
+    </div>
+
+    <% if (selectedDoc != undefined) { %>
+        <div style="display: inline-block; vertical-align: top; margin-top:20px; margin-left:20px; width: 80%">
+            <!-- logout button -->
+            <form action="/logout?_method=DELETE", method="POST">
+                <header>
+                    <h1 style="display: inline"><%= selectedDoc.dataLineageName %></h1>
+                    <button type="submit" style="position: absolute; right: 50px">Logout</button>
+                </header>
+            </form>
+            
+            <!-- section for creating a new node -->
+            <form action="/data_lineage/<%= selectedDoc.dataLineageId %>/createNode", method="POST">
+                <div style="display: inline-block; margin-top: 20px">
+                    <label style="display: block">Node name:</label>
+                    <label style="display: block">Node type:</label>
+                </div>
+                <div style="display: inline-block; margin-top: 20px">
+                    <input style="display: block" type="input" name="nodeName">
+                    <input style="display: block" type="input" name="nodeType">
+                </div>
+                <button type="submit" style="position: absolute; right: 50px">Create node</button>
+            </form>
+    <% } %>
+             <!-- section with a data lineage graph -->
+            <div id="dataLineageGraph" style="height: 80vh;"></div>
+
+            <!-- popup window with additional info about table nodes -->
+            <div class="modal fade" id="tableAdditionalInfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                <div class="modal-dialog" role="document" style="max-width: 80%">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body" style="white-space: pre-line; white-space: pre;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- popup window with additional info about scripts -->
+            <div class="modal fade" id="scriptAdditionalInfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                <div class="modal-dialog" role="document" style="max-width: 80%">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body" style="white-space: pre-line; white-space: pre;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</body>
+</html>

@@ -1,0 +1,1 @@
+This folder contains scripts defining how requests for different endpoints are being handled.

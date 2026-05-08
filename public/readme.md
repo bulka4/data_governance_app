@@ -1,0 +1,1 @@
+This folder probably contains scripts which will be triggered from a browser. They are used by .ejs scripts in the "views" folder.

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
+    <link rel="stylesheet" href="/bootstrap.css">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+    <form action="/logout?_method=DELETE" method="POST" style="display: inline">
+        <button type="submit" style="position: absolute; right: 5%; top: 5%">Log out</button>
+    </form>
+
+    <div style="position: absolute; left: 40%; top: 30%; display: inline-block; border: 3px solid black; border-radius: 5px">
+        <a href="/data_lineage_dashboards" style="font-size: 30px">Data Lineage</a>
+    </div>
+    
+    <div style="position: absolute; right: 40%; top: 30%; display: inline-block; border: 3px solid black; border-radius: 5px">
+        <a href="/tables_docs" style="font-size: 30px; right: 10%">Data Catalog</a>
+    </div>
+</body>
+</html>

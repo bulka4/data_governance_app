@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
+    <link rel="stylesheet" href="/bootstrap.css">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script type="module" src="/tableScripts.js"></script>
+</head>
+<body>
+    <script>
+        // alert
+        <% if (alert == 'tooLongWord'){ %>
+            alert('You have entered too long word into a description. Max word length is equal to 50 characters.')
+        <% } %>
+    </script>
+
+    <div style="display: inline-flex; width: 100%">
+        <!-- section with tables list -->
+        <div id="tablesList" class="list-group" style="width: 300px; height: 100vh; overflow: auto; display: inline-block; width: 15%; resize: horizontal">
+            <form action="/tables_docs/table/search" method="POST" style="margin-bottom: 20px">
+                <div style="text-align: center;">
+                    <label>Type in what you are looking for</label>
+                </div>
+                <div style="text-align: center;">
+                    <input type="input" name="searchBar" style="width: 100%; margin-bottom: 10px" value ="<%= searchedQuery %>">
+                    <button type="submit" name="tableId" value="<%= selected_doc.tableId %>">Search</button>
+                </div>
+            </form>
+            <% docs.forEach(doc => { %>
+                <% if (doc.tableId == selected_doc.tableId) { %>
+                    <div id="table_<%= doc.tableId %>" class="list-group-item list-group-item-action active" style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">
+                        <% if (searchedQuery != '') { %>
+                            <a href="/tables_docs/<%= doc.tableId %>/table?searchedQuery=<%= searchedQuery %>" style="color: white">
+                        <% } else { %>
+                            <a href="/tables_docs/<%= doc.tableId %>/table" style="color: white">
+                        <% } %>
+                <% } else { %>
+                    <div id="table_<%= doc.tableId %>" class="list-group-item list-group-item-action" style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">
+                    <% if (searchedQuery != '') { %>
+                        <a href="/tables_docs/<%= doc.tableId %>/table?searchedQuery=<%= searchedQuery %>">
+                    <% } else { %>
+                        <a href="/tables_docs/<%= doc.tableId %>/table">
+                    <% } %>
+                <% } %>
+                            <%= doc.tableName %>
+                        </a>
+                        <div style="text-overflow: ellipsis; overflow: hidden">
+                            <%= doc.tableDescription %>
+                        </div>
+                    </div>
+            <% }) %>
+        </div>
+
+        <!-- section with a documentation -->
+        <div style="display: inline-block; vertical-align: top; margin-top:20px; margin-left:20px; width: 80%">
+            <!-- log out and home button -->
+            <header>
+                <h1 style="display: inline"><%= selected_doc.tableName %></h1>
+                <form action="/logout?_method=DELETE" method="POST" style="display: inline">
+                    <button type="submit" style="position: absolute; right: 5%">Log out</button>
+                </form>
+                <form action="/home" method="GET" style="display: inline">
+                    <button type="submit" style="position: absolute; right: 10%">Home</button>
+                </form>
+            </header>
+
+            <!-- buttons redirecting to a page with table and columns descriptions -->
+            <div style="margin-top:20px">
+                <% if (searchedQuery != '') { %>
+                    <a href="/tables_docs/<%= selected_doc.tableId %>/table?searchedQuery=<%= searchedQuery %>">Table</a>
+                    <a href="/tables_docs/<%= selected_doc.tableId %>/columns?searchedQuery=<%= searchedQuery %>">Columns</a>
+                <% } else { %>
+                    <a href="/tables_docs/<%= selected_doc.tableId %>/table">Table</a>
+                    <a href="/tables_docs/<%= selected_doc.tableId %>/columns">Columns</a>
+                <% } %>
+                
+            </div>
+            <!-- documentation for tables -->
+            <div style="margin-top:20px">
+                <% if (readOnly) { %>
+                    <textarea rows="30" cols="150" name="description" readonly style="width: 90%"><%= selected_doc.tableDescription %></textarea>
+                <% } else { %>
+                    <form action="/tables_docs/<%= selected_doc.tableId %>/table?_method=PUT&searchedQuery=<%= searchedQuery %>" method="POST">
+                        <span style="display: block">Table description:</span>
+                        <textarea rows="30" cols="150" name="description" style="width: 90%"><%= selected_doc.tableDescription %></textarea>
+                        <button type="submit" class="btn btn-primary" style="vertical-align: top; width: 5%">Save</button>
+                    </form>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
